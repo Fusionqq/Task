@@ -1,0 +1,11 @@
+commit edea26cd1f6aac7aacc72d68369d655df5176293
+Author: Осипов Александр <Осипов Александр>
+Date:   Sat Feb 27 12:18:19 2016 +0300
+
+    Add status.txt
+
+commit c90d42f17b50af33cd1bc7463d41c73f9f8e95a0
+Author: Осипов Александр <Осипов Александр>
+Date:   Sat Feb 27 12:17:29 2016 +0300
+
+    Add .gitignore
