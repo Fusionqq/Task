@@ -1,6 +1,7 @@
 body {
   background: url(https://images.alphacoders.com/150/150823.jpg);
   background-size: cover;
+  margin: 0;
 }
 
 .All {
@@ -150,10 +151,18 @@ body {
 
 .top {
 	text-align: center;
+  margin: auto;
+  width: 700px;
 }
 
 .img {
   border-radius: 100px;
   height: 70px;
   width: 70px;
+}
+
+.bot {
+  text-align: center;
+  margin: auto;
+  width: 700px;
 }
