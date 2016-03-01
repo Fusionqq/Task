@@ -75,6 +75,12 @@ body {
  1px 1px 1px rgba(0,0,0,0.4);
 }
 
+.todo-button:active {
+  box-shadow:
+ 0px 0px 1px rgba(0,0,0,0.8) inset,
+ 3px 3px 3px rgba(0,0,0,0.8);
+}
+
 .todo-input {	
 	height: 16px;
 	width: 50%;
@@ -110,7 +116,7 @@ body {
 }
 
 .myMess {
-	text-align: right;
+	text-align: left;
   padding: 8px;
   border: 1px solid #6383a8;
   border-radius: 10px;
@@ -128,7 +134,7 @@ body {
 }
 
 .myDeletedMessage {
-  text-align: right;
+  text-align: left;
   padding: 8px;
   border: 1px solid #FFE4C4;
   border-radius: 10px;
@@ -210,12 +216,6 @@ body {
   -webkit-border-radius: 5px;
 }
 
-::-webkit-scrollbar-thumb:horizontal{
-  width: 5px;
-  background-color: #666;
-  -webkit-border-radius: 5px;
-}
-
 .galBut {
   width: 20px;
   height: 20px;
@@ -232,14 +232,15 @@ body {
   1px 3px 3px rgba(0,0,0,0.4);
 }
 
-.gal1 {
-  float: right;
-  padding-bottom: 5px;
+.galBut:active {
+  box-shadow:
+  0px 0px 1px rgba(0,0,0,0.8) inset,
+  3px 3px 3px rgba(0,0,0,0.8);
 }
 
-.gal2 {
-  float: left;
-  padding-bottom: 5px;
+.gal {
+  float: right;
+  padding-left: 8px;
 }
 
 
