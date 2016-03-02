@@ -16,7 +16,6 @@ body {
 }
 
 .All {
-	text-align: center;
 	width: 50%;
 	margin: auto;
 	padding: 10px;
@@ -55,7 +54,7 @@ body {
 	margin-bottom: 10px;
 }
 
-.todo-button {
+#addButton {
  	padding: 6px 16px 7px 16px;
   font-size: 11px;
   display: inline-block;
@@ -69,13 +68,13 @@ body {
   border-radius: 2px;
 }
 
-.todo-button:hover{
+#addButton:hover{
 	box-shadow:
  0px 1px 1px rgba(255,255,255,0.8) inset,
  1px 1px 1px rgba(0,0,0,0.4);
 }
 
-.todo-button:active {
+#addButton:active {
   box-shadow:
  0px 0px 1px rgba(0,0,0,0.8) inset,
  3px 3px 3px rgba(0,0,0,0.8);
@@ -105,13 +104,12 @@ body {
   clear: both;
 }
 
-.Sasha {
-	text-align: right;
-	padding-right: 1%;
+.myName {
+	padding-left: 1%;
 	font-family: tahoma, arial, verdana, sans-serif, Lucida Sans;
 	font-size: 15px;
 	color: #4682B4;
-  font-weight: 600;	
+  font-weight: 900;	
   clear: both;
 }
 
@@ -224,9 +222,11 @@ body {
   border: 0;
   cursor: pointer;
   outline: none;
+  float: right;
+  padding: 8px;
 }
 
-.galBut:hover{
+.galBut:hover {
   box-shadow:
   0px 3px 3px rgba(255,255,255,0.8) inset,
   1px 3px 3px rgba(0,0,0,0.4);
@@ -238,10 +238,31 @@ body {
   3px 3px 3px rgba(0,0,0,0.8);
 }
 
-.gal {
-  float: right;
-  padding-left: 8px;
+.items {
+  width: 100%;
+  padding-left: 0;
+  margin-top: 0;
+  
 }
 
+.item {
+  text-align: left;
+  padding: 7px;
+  border: 1px solid #6383a8;
+  border-radius: 10px;
+  font-family: tahoma, arial, verdana, sans-serif, Lucida Sans;
+  font-size: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 1%;
+  width: 30%;
+  background-color: #6383a8;
+  color: #FFF;
+  word-wrap: break-word;
+  float: left;
+  clear: both;
+}
 
-
+li {
+  list-style-type: none;
+}
