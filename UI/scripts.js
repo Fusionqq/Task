@@ -1,68 +1,59 @@
+var counter = 0;
 function run(){
 	var appContainer = document.getElementsByClassName('main')[0];
 
-	appContainer.addEventListener('click', delegateEvent);
-	appContainer.addEventListener('keydown', delegateEvent);
+	appContainer.addEventListener('click', changeName);
+	appContainer.addEventListener('click', sendMessage);
+	appContainer.addEventListener('keydown', sendMessage);
+	appContainer.addEventListener('click', deleteMessage);
 }
 
-function delegateEvent(evtObj) {
-	if((evtObj.type === 'click' && evtObj.target.classList.contains('todo-button')) || evtObj.keyCode == 13){
-		onAddButtonClick(evtObj);
-	}
+
+function changeName() {
+    var input = document.getElementById('name');
+ 
+    var s = document.getElementsByClassName('myName');
+ 
+    for (var i = 0; i < s.length; i++) {
+    	s[i] = input.value;
+    }
 }
 
-function onAddButtonClick(){
-	var todoText = document.getElementById('todoText');
+function sendMessage(evtObj){
+	if((evtObj.type === 'click' && evtObj.target.classList.contains('todo-button')) || evtObj.keyCode == 13) {
+		var todoText = document.getElementById('todoText');
+		var itemName = document.getElementById('name');
+		var divItem = document.createElement('li');
+		var divName = document.createElement('li');
+		var but1 = document.createElement('button');
+		var but2 = document.createElement('button');
+   
+		but1.classList.add('delBut');
+		but2.classList.add('redBut');
+		divItem.classList.add('item');
+		divName.classList.add('myName');
 
-	addTodo(todoText.value);
-	todoText.value = '';
+		//divItem.setAttribute('id' , 'liId' + counter);
 
-} 
+		divItem.appendChild(but1);
+		divItem.appendChild(but2);
+		divItem.appendChild(document.createTextNode(todoText.value));
+		divName.appendChild(document.createTextNode(itemName.value));
 
-function addTodo(value) {
-	if(!value){
-		return;
-	}
+		if(todoText.value != "") {
+			document.getElementById('list').appendChild(divName);
+			document.getElementById('list').appendChild(divItem);
+		}
+
+		todoText.value = "";
+		counter++;
+	}	
+}
+
+function deleteMessage() {
 	
-	var item = createItem(value);
-	var name = createName('Sasha');
-	var items = document.getElementsByClassName('items')[0];
-
-	items.appendChild(name);
-	items.appendChild(item);
-
 }
 
-function createItem(text){
-	var divItem = document.createElement('li');
-	var but = document.createElement('button');
-
-	but.setAttribute('id', 'gal');
-	but.classList.add('galBut');
-	divItem.classList.add('item');
-
-	divItem.appendChild(but);
-	divItem.appendChild(document.createTextNode(text));
-
-	return divItem;
-}
-
-function createName(text) {
-	var divName = document.createElement('li');
-
-	divName.classList.add('myName');
-	
-	divName.appendChild(document.createTextNode(text));
-	
-	return divName;
-}
-
-function actionForGalBut() {
-	document.getElementById('gal').addEventListener('dblclick', function() {
-		document.getElementById('gal').style.width = "25px";
-		document.getElementById('gal').style.height = "25px";
-	})
-}
 
 
 
