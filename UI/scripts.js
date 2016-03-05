@@ -22,7 +22,7 @@ function changeName() {
     var s = document.getElementsByClassName('myName');
  
     for (var i = 0; i < s.length; i++) {
-    	s[i].innerHTML = input.value;
+    	s[i] = input.value;
     }
 
     username = input.value;
