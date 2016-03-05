@@ -16,7 +16,6 @@ function delegateMessage(evtObj) {
 	}
 }
 
-
 function changeName() {
 	var input = document.getElementById('name');
  
@@ -33,23 +32,29 @@ function sendMessage() {
 	var todoText = document.getElementById('todoText');
 	var divItem = document.createElement('li');
 	var divName = document.createElement('li');
-	var div = document.createElement('div');
+	var textName = document.createElement('div');
+	var text = document.createElement('div');
+	var time = document.createElement('div');
 	var but1 = document.createElement('button');
 	var but2 = document.createElement('button');
 	var input = document.createElement('input');
    		
 	but1.classList.add('delBut');
 	but2.classList.add('redBut');
+	time.classList.add('time');
 	divItem.classList.add('item');
-	divName.classList.add('myName');
+	textName.classList.add('myName');
 
+	time.setAttribute('id', 't');
 	divItem.setAttribute('id', 'divId' + id);
-	div.setAttribute('id', 'textDiv' + id);
+	text.setAttribute('id', 'textDiv' + id);
 	input.setAttribute('id', 'textIn' + id);
 	input.setAttribute('class', 'In');
 
 	var s = new String(id);
-	div.innerHTML = todoText.value;
+	text.innerHTML = todoText.value;
+	textName.innerHTML = username;
+	time.textContent = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
 
 	but1.addEventListener('click', function(){
 		deleteMessage(s);
@@ -61,11 +66,13 @@ function sendMessage() {
 
 	divItem.appendChild(but1);
 	divItem.appendChild(but2);
-	divItem.appendChild(div);
+	divItem.appendChild(text);
 	divItem.appendChild(input);
-	divName.appendChild(document.createTextNode(username));
+	divName.appendChild(time);
+	divName.appendChild(textName);
+	
 	input.hidden = true;
-	div.hidden = false;
+	text.hidden = false;
 
 	if(todoText.value != "") {
 		document.getElementById('list').appendChild(divName);
@@ -87,17 +94,17 @@ function deleteMessage(id) {
 
 function changeMessage(id) {
 	var k = document.getElementById('divId' + id);
-	var div = document.getElementById('textDiv' + id);
+	var text = document.getElementById('textDiv' + id);
 	var input = document.getElementById('textIn' + id);
-	input.value = div.innerHTML;
+	input.value = text.innerHTML;
 	input.hidden = false;
-	div.hidden = true;
+	text.hidden = true;
 
 	input.addEventListener('keydown', function(e) {
 		if(e.keyCode == 13) {
-			div.innerHTML = input.value;
+			text.innerHTML = input.value;
 			input.hidden = true;
-			div.hidden = false;
+			text.hidden = false;
 		}
 	});		
 }
