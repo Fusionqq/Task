@@ -19,11 +19,11 @@ function delegateMessage(evtObj) {
 function changeName() {
 	var input = document.getElementById('name');
  
-    var s = document.getElementsByClassName('myName');
+    /*var s = document.getElementsByClass('myName');
  
     for (var i = 0; i < s.length; i++) {
     	s[i] = input.value;
-    }
+    }*/
 
     username = input.value;
 }
@@ -78,6 +78,14 @@ function sendMessage() {
 		document.getElementById('list').appendChild(divName);
 		document.getElementById('list').appendChild(divItem);
 	}
+
+	/*if(username == "Sasha") {
+		but1.hidden = false;
+		but2.hidden = false;
+	} else {
+		but1.hidden = true;
+		but2.hidden = true;
+	}*/
 
 	todoText.value = "";
 	id++;
