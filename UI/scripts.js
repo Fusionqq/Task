@@ -64,7 +64,7 @@ function storeUserName() {
 		alert('localStorage is not accessible');
 		return;
 	}
-	
+
 	localStorage.setItem("User's name", nameList);
 }
 

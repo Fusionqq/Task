@@ -1,5 +1,5 @@
 body {
-  background: url(https://images.alphacoders.com/150/150823.jpg) no-repeat center center fixed;
+  background: url(images/Natalie_Portman.jpg) no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -190,7 +190,7 @@ body {
 .delBut {
   width: 20px;
   height: 20px;
-  background: url("https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/512/delete.png") no-repeat center;
+  background: url(images/delete.png) no-repeat center;
   background-size: 100%;
   border-radius: 10px ;
   border: 0;
@@ -216,7 +216,7 @@ body {
 .redBut {
   width: 20px;
   height: 20px;
-  background: url("https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/512/edit.png") no-repeat center;
+  background: url(images/edit.png) no-repeat center;
   background-size: 70%;
   border-radius: 10px ;
   border: 0;
