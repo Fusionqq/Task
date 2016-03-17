@@ -1,19 +1,24 @@
 var id = 0;
-var username = "Sasha";
-var taskList = [];
+var username = "";
+var nameList = [];
 function run(){
 	var appContainer = document.getElementsByClassName('main')[0];
 
 	appContainer.addEventListener('click', delegateMessage);
 	appContainer.addEventListener('keydown', delegateMessage);
-	//restore();	 
+
+	username = restoreUserName() || "Default User";
+	var input = document.getElementById('name');
+	input.value = username;
 }
 
 function delegateMessage(evtObj) {
-	if(evtObj.type === 'click' && evtObj.target.classList.contains('changename-button')) {
+	if((evtObj.type === 'click' && evtObj.target.classList.contains('changename-button')) || 
+		(evtObj.type === 'keydown' && evtObj.target.classList.contains('todo-input1') && evtObj.keyCode == 13)) {
 		changeName(evtObj);
 	}
-	if((evtObj.type === 'click' && evtObj.target.classList.contains('todo-button')) || evtObj.keyCode == 13) {
+	if((evtObj.type === 'click' && evtObj.target.classList.contains('todo-button')) || 
+		(evtObj.type === 'keydown' && evtObj.target.classList.contains('todo-input2') && evtObj.keyCode == 13)) {
 		sendMessage(evtObj);
 	}
 }
@@ -22,16 +27,45 @@ function changeName() {
     var input = document.getElementById('name');
     var but1 = document.getElementsByClassName('delBut');
     var but2 = document.getElementsByClassName('redBut');
+   	var name = document.getElementsByClassName('myName');
 
-    for(var i = 0; i < but1.length; i++){
+    for(var i = 0; i < but1.length; i++) {
         if(input.value!=username)
         but1[i].hidden = true;
     }
-     for(var i = 0; i < but2.length; i++){
+    for(var i = 0; i < but2.length; i++) {
         if(input.value!=username)
         but2[i].hidden = true;
     }
-    username = input.value;         
+    for(var i = 0; i < name.length; i++) {
+    	if(name[i].innerHTML == input.value) {
+    		but1[i].hidden = false;
+    		but2[i].hidden = false;
+    	}	
+    }
+
+    username = input.value;
+    nameList = input.value;
+    storeUserName();    
+}
+
+function restoreUserName() {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
+
+	var item = localStorage.getItem("User's name");
+	return item;
+}
+
+function storeUserName() {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
+	
+	localStorage.setItem("User's name", nameList);
 }
 
 function sendMessage() {
@@ -44,13 +78,14 @@ function sendMessage() {
 	var but1 = document.createElement('button');
 	var but2 = document.createElement('button');
 	var input = document.createElement('input');
-   		
+	var box = document.getElementById('Box');
+   	
 	but1.classList.add('delBut');
 	but2.classList.add('redBut');
 	time.classList.add('time');
 	divItem.classList.add('item');
 	textName.classList.add('myName');
-        
+    
     but1.setAttribute('id','del' + id);
     but2.setAttribute('id','red' + id);
     but2.setAttribute('title','Click to open \nDouble-click to close');
@@ -78,7 +113,7 @@ function sendMessage() {
 		changeMessage2(s);
 	});
 
-	divItem.addEventListener('keydown', function(e){
+	box.addEventListener('keydown', function(e){
 		if(e.keyCode == 27){
 			changeMessage3(s);
 		}
@@ -102,11 +137,6 @@ function sendMessage() {
 	todoText.value = "";
 	id++;
 	
-	taskList.push(divName);
-	taskList.push(divItem);
-	store(taskList);
-
-	var box = document.getElementById('Box');
 	box.scrollTop = 9999;
 }
 
@@ -123,18 +153,16 @@ function changeMessage(id) {
 	var k = document.getElementById('divId' + id);
 	var text = document.getElementById('textDiv' + id);
 	var input = document.getElementById('textIn' + id);
-	var but1 = document.getElementById('del' + id);
+	
 	input.value = text.innerHTML;
 	input.hidden = false;
 	text.hidden = true;
-	but1.hidden = true;
 
 	input.addEventListener('keydown', function(e) {
 		if(e.keyCode == 13) {
 			text.innerHTML = input.value;
 			input.hidden = true;
 			text.hidden = false;
-			but1.hidden = false;
 		}
 	});		
 }
@@ -145,32 +173,18 @@ function changeMessage2(id) {
 	var but1 = document.getElementById('del' + id);
 	input.hidden = true;
 	text.hidden = false;
-	but1.hidden = false;
 }
 
 function changeMessage3(id) {
 	var text = document.getElementsByClassName('Txt');
 	var input = document.getElementsByClassName('In');
-	var but1 = document.getElementsByClassName('delBut');
+
 	for (var i = 0; i < text.length; i++) {
 		text[i].hidden = false;
 	}
 	for (var i = 0; i < input.length; i++) {
 		input[i].hidden = true;
 	}
-	for (var i = 0; i < but1.length; i++) {
-		but1[i].hidden = false;
-	}
-}
-
-function restore() {
-	var item = localStorage.getItem("TODOs taskList");
-	alert(item);
-	return item && JSON.parse(item);
-}
-
-function store(listToSave) {
-	localStorage.setItem("TODOs taskList", JSON.stringify(listToSave));
 }
 
 
