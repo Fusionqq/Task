@@ -1,15 +1,25 @@
 var id = 0;
 var username = "";
-var nameList = [];
+var messList = [];
+flag = new Boolean(true);
 function run(){
 	var appContainer = document.getElementsByClassName('main')[0];
 
 	appContainer.addEventListener('click', delegateMessage);
 	appContainer.addEventListener('keydown', delegateMessage);
 
-	username = restoreUserName() || "Default User";
+	
+	messList = restoreUserMess() || [newMessage('Chat launched')];
+	id = messList[messList.length - 1].identificator;
+
+	username = restoreUserName() || 'Default user';
 	var input = document.getElementById('name');
 	input.value = username;
+
+	updateHistory(messList);
+
+	var box = document.getElementById('Box');
+    box.scrollTop += 9999;
 }
 
 function delegateMessage(evtObj) {
@@ -23,31 +33,133 @@ function delegateMessage(evtObj) {
 	}
 }
 
-function changeName() {
-    var input = document.getElementById('name');
-    var but1 = document.getElementsByClassName('delBut');
-    var but2 = document.getElementsByClassName('redBut');
-   	var name = document.getElementsByClassName('myName');
+function newMessage(text) {
+    id++;
 
-    for(var i = 0; i < but1.length; i++) {
-        if(input.value!=username)
-        but1[i].hidden = true;
-    }
-    for(var i = 0; i < but2.length; i++) {
-        if(input.value!=username)
-        but2[i].hidden = true;
-    }
-    for(var i = 0; i < name.length; i++) {
-    	if(name[i].innerHTML == input.value) {
-    		but1[i].hidden = false;
-    		but2[i].hidden = false;
-    	}	
-    }
-
-    username = input.value;
-    nameList = input.value;
-    storeUserName();    
+    return {
+        nickname: username,
+        identificator: id,
+        messtext: text,
+        timer: new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1"),
+        deleted: false
+    };
 }
+
+function updateHistory(messList) {
+	document.getElementById('list').innerHTML = "";
+
+    for (var i = 0; i < messList.length; i++) {
+    	showUpdatedHistory(messList[i]);
+    }
+   
+    storeUserMess(messList);
+}
+
+function sendMessage() {
+    var todoText = document.getElementById('todoText');
+    var text = todoText.value;
+
+    if(text != "") {
+    	messList.push(newMessage(text));
+    	updateHistory(messList);
+    	todoText.value = "";
+    }
+
+    flag = true; 
+
+    var box = document.getElementById('Box');
+    box.scrollTop += 9999;  
+}
+
+function changeName() {
+    var input = document.getElementById('name'); 	
+    
+    username = input.value;
+    storeUserName(username);
+    updateHistory(messList);
+
+    flag = true;
+
+    var box = document.getElementById('Box');
+    box.scrollTop += 9999; 
+}
+
+function showUpdatedHistory(mess) {
+	var divItem = document.createElement('li');
+	var divName = document.createElement('li');
+	var textName = document.createElement('div');
+	var textItem = document.createElement('div');
+	var time = document.createElement('div');
+	var box = document.getElementById('Box');
+	
+	time.classList.add('time');
+	divItem.classList.add('item');
+	textItem.classList.add('Txt');
+	textName.classList.add('myName');
+	
+	time.setAttribute('id', 't' + mess.identificator);
+	divItem.setAttribute('id', 'divId' + mess.identificator);
+	textItem.setAttribute('id', 'textDiv' + mess.identificator);
+
+	if(username === mess.nickname) {
+
+		if(!mess.deleted) {
+			var but1 = document.createElement('button');
+			var but2 = document.createElement('button');
+		
+			but1.classList.add('delBut');
+			but2.classList.add('redBut');
+		
+			but1.setAttribute('id','del' + mess.identificator);
+    		but2.setAttribute('id','red' + mess.identificator);
+    		but2.setAttribute('title','Click to open \nDouble-click to close');
+    	
+			but1.addEventListener('click', function(){
+				deleteMessage(mess);
+			});
+
+			but2.addEventListener('click', function(){
+				if(flag == true) {
+					changeMessage(mess);
+				} 
+			});
+
+			but2.addEventListener('dblclick', function(){
+				changeMessage2(mess);
+			});
+
+			box.addEventListener('keydown', function(e){
+				if(e.keyCode == 27){
+					changeMessage3(mess);
+				}
+			});
+
+			divItem.appendChild(but2);
+			divItem.appendChild(but1);
+		}
+
+		var inputRed = document.createElement('input');
+
+		inputRed.classList.add('In');
+		inputRed.setAttribute('id', 'textIn' + mess.identificator);
+		inputRed.hidden = true;
+
+		divItem.appendChild(inputRed);
+	}
+	
+	textItem.innerHTML = mess.messtext;
+	textName.innerHTML = mess.nickname;
+	time.innerHTML = mess.timer;
+
+	divName.appendChild(time);
+	divName.appendChild(textName);
+
+	divItem.appendChild(textItem);
+
+	document.getElementById('list').appendChild(divName);
+	document.getElementById('list').appendChild(divItem);
+}
+
 
 function restoreUserName() {
 	if(typeof(Storage) == "undefined") {
@@ -56,135 +168,80 @@ function restoreUserName() {
 	}
 
 	var item = localStorage.getItem("User's name");
-	return item;
+	return item && JSON.parse(item);;
 }
 
-function storeUserName() {
+function storeUserName(listToSave) {
 	if(typeof(Storage) == "undefined") {
 		alert('localStorage is not accessible');
 		return;
 	}
 
-	localStorage.setItem("User's name", nameList);
+	localStorage.setItem("User's name", JSON.stringify(listToSave));
 }
 
-function sendMessage() {
-	var todoText = document.getElementById('todoText');
-	var divItem = document.createElement('li');
-	var divName = document.createElement('li');
-	var textName = document.createElement('div');
-	var text = document.createElement('div');
-	var time = document.createElement('div');
-	var but1 = document.createElement('button');
-	var but2 = document.createElement('button');
-	var input = document.createElement('input');
-	var box = document.getElementById('Box');
-   	
-	but1.classList.add('delBut');
-	but2.classList.add('redBut');
-	time.classList.add('time');
-	divItem.classList.add('item');
-	textName.classList.add('myName');
-    
-    but1.setAttribute('id','del' + id);
-    but2.setAttribute('id','red' + id);
-    but2.setAttribute('title','Click to open \nDouble-click to close');
-	time.setAttribute('id', 't' + id);
-	divItem.setAttribute('id', 'divId' + id);
-	text.setAttribute('id', 'textDiv' + id);
-	input.setAttribute('id', 'textIn' + id);
-	input.setAttribute('class', 'In');
-	text.setAttribute('class', 'Txt');
+function restoreUserMess() {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
 
-	var s = new String(id);
-	text.innerHTML = todoText.value;
-	textName.innerHTML = username;
-	time.innerHTML = new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+	var item = localStorage.getItem("User's mess");
+	return item && JSON.parse(item);
+}
 
-	but1.addEventListener('click', function(){
-		deleteMessage(s);
-	});
+function storeUserMess(listToSave) {
+	if(typeof(Storage) == "undefined") {
+		alert('localStorage is not accessible');
+		return;
+	}
 
-	but2.addEventListener('click', function(){
-		changeMessage(s);
-	});
+	localStorage.setItem("User's mess", JSON.stringify(listToSave));	
+}
 
-	but2.addEventListener('dblclick', function(){
-		changeMessage2(s);
-	});
+function deleteMessage(mess) {
+	mess.messtext = 'Deleted...';
+	mess.deleted = true;
+	flag = true;
+	updateHistory(messList);
+}
 
-	box.addEventListener('keydown', function(e){
-		if(e.keyCode == 27){
-			changeMessage3(s);
+function changeMessage(mess) {
+	var textItem = document.getElementById('textDiv' + mess.identificator);
+	var inputRed = document.getElementById('textIn' + mess.identificator);
+
+	textItem.hidden = true;
+	inputRed.hidden = false;
+	
+	inputRed.value = mess.messtext;
+
+	flag = false;
+
+	inputRed.addEventListener('keydown', function(e) {
+		if(e.keyCode == 13 && username === mess.nickname) {
+			mess.messtext = inputRed.value;
+			inputRed.hidden = true;
+			textItem.hidden = false;
+			updateHistory(messList);
+			flag = true;
 		}
 	});
-
-	divItem.appendChild(but2);
-	divItem.appendChild(but1);
-	divItem.appendChild(text);
-	divItem.appendChild(input);
-	divName.appendChild(time);
-	divName.appendChild(textName);
-	
-	input.hidden = true;
-	text.hidden = false;
-
-	if(todoText.value != "") {
-		document.getElementById('list').appendChild(divName);
-		document.getElementById('list').appendChild(divItem);
-	}
-
-	todoText.value = "";
-	id++;
-	
-	box.scrollTop = 9999;
 }
 
-
-function deleteMessage(id) {
-	var k = document.getElementById('divId' + id);
-
-	document.getElementById('divId' + id).innerHTML = 'Сообщение удалено...';
-	k.classList.remove('item');
-	k.classList.add('myDeletedMessage');
+function changeMessage2(mess) {
+	var textItem = document.getElementById('textDiv' + mess.identificator);
+	var inputRed = document.getElementById('textIn' + mess.identificator);
+	inputRed.hidden = true;
+	textItem.hidden = false;
+	flag = true; 
 }
 
-function changeMessage(id) {
-	var k = document.getElementById('divId' + id);
-	var text = document.getElementById('textDiv' + id);
-	var input = document.getElementById('textIn' + id);
-	
-	input.value = text.innerHTML;
-	input.hidden = false;
-	text.hidden = true;
-
-	input.addEventListener('keydown', function(e) {
-		if(e.keyCode == 13) {
-			text.innerHTML = input.value;
-			input.hidden = true;
-			text.hidden = false;
-		}
-	});		
-}
-
-function changeMessage2(id) {
-	var text = document.getElementById('textDiv' + id);
-	var input = document.getElementById('textIn' + id);
-	var but1 = document.getElementById('del' + id);
-	input.hidden = true;
-	text.hidden = false;
-}
-
-function changeMessage3(id) {
-	var text = document.getElementsByClassName('Txt');
-	var input = document.getElementsByClassName('In');
-
-	for (var i = 0; i < text.length; i++) {
-		text[i].hidden = false;
-	}
-	for (var i = 0; i < input.length; i++) {
-		input[i].hidden = true;
-	}
+function changeMessage3(mess) {
+	var textItem = document.getElementById('textDiv' + mess.identificator);
+	var inputRed = document.getElementById('textIn' + mess.identificator);
+	inputRed.hidden = true;
+	textItem.hidden = false;
+	flag = true; 
 }
 
 
