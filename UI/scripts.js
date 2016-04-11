@@ -2,6 +2,7 @@ var id = 0;
 var username = "";
 var messList = [];
 flag = new Boolean(true);
+
 function run(){
 	var appContainer = document.getElementsByClassName('main')[0];
 
@@ -41,7 +42,8 @@ function newMessage(text) {
         identificator: id,
         messtext: text,
         timer: new Date().toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1"),
-        deleted: false
+        deleted: false,
+        red: false
     };
 }
 
@@ -51,7 +53,7 @@ function updateHistory(messList) {
     for (var i = 0; i < messList.length; i++) {
     	showUpdatedHistory(messList[i]);
     }
-   
+   	
     storeUserMess(messList);
 }
 
@@ -71,13 +73,14 @@ function sendMessage() {
     box.scrollTop += 9999;  
 }
 
+
 function changeName() {
-    var input = document.getElementById('name'); 	
-    
+    var input = document.getElementById('name');
+
     username = input.value;
     storeUserName(username);
     updateHistory(messList);
-
+    
     flag = true;
 
     var box = document.getElementById('Box');
@@ -91,18 +94,21 @@ function showUpdatedHistory(mess) {
 	var textItem = document.createElement('div');
 	var time = document.createElement('div');
 	var box = document.getElementById('Box');
+	var redPic = document.createElement('IMG');
 	
 	time.classList.add('time');
 	divItem.classList.add('item');
-	textItem.classList.add('Txt');
+	divName.classList.add('name');
 	textName.classList.add('myName');
-	
+
 	time.setAttribute('id', 't' + mess.identificator);
 	divItem.setAttribute('id', 'divId' + mess.identificator);
+	divName.setAttribute('id', 'divName' + mess.identificator);
 	textItem.setAttribute('id', 'textDiv' + mess.identificator);
 
 	if(username === mess.nickname) {
-
+		var inputRed = document.createElement('input');
+		
 		if(!mess.deleted) {
 			var but1 = document.createElement('button');
 			var but2 = document.createElement('button');
@@ -128,7 +134,7 @@ function showUpdatedHistory(mess) {
 				changeMessage2(mess);
 			});
 
-			box.addEventListener('keydown', function(e){
+			inputRed.addEventListener('keydown', function(e){
 				if(e.keyCode == 27){
 					changeMessage3(mess);
 				}
@@ -138,15 +144,22 @@ function showUpdatedHistory(mess) {
 			divItem.appendChild(but1);
 		}
 
-		var inputRed = document.createElement('input');
-
 		inputRed.classList.add('In');
 		inputRed.setAttribute('id', 'textIn' + mess.identificator);
 		inputRed.hidden = true;
 
 		divItem.appendChild(inputRed);
+		 	
 	}
-	
+
+	if(mess.red === true) {
+		redPic.setAttribute('id', 'redPi' + mess.identificator);
+		redPic.classList.add('pika-pika');
+		redPic.src = "images/nichosi_2x.png";
+		
+		divName.appendChild(redPic);
+	}
+
 	textItem.innerHTML = mess.messtext;
 	textName.innerHTML = mess.nickname;
 	time.innerHTML = mess.timer;
@@ -202,6 +215,7 @@ function storeUserMess(listToSave) {
 function deleteMessage(mess) {
 	mess.messtext = 'Deleted...';
 	mess.deleted = true;
+	mess.red = false;
 	flag = true;
 	updateHistory(messList);
 }
@@ -212,16 +226,21 @@ function changeMessage(mess) {
 
 	textItem.hidden = true;
 	inputRed.hidden = false;
-	
+
 	inputRed.value = mess.messtext;
 
 	flag = false;
 
 	inputRed.addEventListener('keydown', function(e) {
 		if(e.keyCode == 13 && username === mess.nickname) {
+			if(mess.messtext != inputRed.value) {
+				mess.red = true;
+			}
+			
 			mess.messtext = inputRed.value;
 			inputRed.hidden = true;
 			textItem.hidden = false;
+		
 			updateHistory(messList);
 			flag = true;
 		}
