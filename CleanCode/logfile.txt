@@ -1,0 +1,7 @@
+Request: new message on 2016-04-18 18:24:15.568	 Amount of new messages: 1
+Request: new message on 2016-04-18 18:24:38.628	 Amount of new messages: 1
+Request: new message on 2016-04-18 18:24:59.666	 Amount of new messages: 1
+Request: delete message on 2016-04-18 18:25:12.648	 Amount of deleted messages: 1
+Request: searching by author on 2016-04-18 18:25:23.487	 Amount of messages: 2
+Request: searching by keyword on 2016-04-18 18:25:31.202	 Amount of messages: 1
+Request: searching by a period of time on 2016-04-18 18:26:00.872	 Amount of found messages: 2

@@ -59,6 +59,7 @@ public class FileWorker {
                             .add("timestamp", it.getTimestamp().getTime()).build());
                 }
 
+                System.out.println("Messages has been successfully writing into file.");
                 JsonArray personArray = arrayBuilder.build();
                 jsonWriter.writeArray(personArray);
                 jsonWriter.close();
