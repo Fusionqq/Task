@@ -7,8 +7,7 @@
         <servlet>
             <servlet-name>Main</servlet-name>
             <servlet-class>
-
-                by.bsu.Main.java
+                MyChat.Main.java
             </servlet-class>
         </servlet>
         <servlet-mapping>
